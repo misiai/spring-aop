@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+
+    <!--目标类-->
+    <bean id="userService" class="com.misiai.c_spring_01.UserServiceImpl"/>
+    <!--切面类-->
+    <bean id="myAspect" class="com.misiai.c_spring_01.MyAspect"/>
+    <!--    代理类
+        史用工厂bean FactoryBean，底层调用getObject（）返回特殊bean
+        ProxyFactoryBean用于创建代理工厂bean，生成特殊代理对象
+
+        interfaces：确定接口i通过<array>可以设置多个值只有一个值时，value=""
+        target：确定目标类
+        interceptorNames：通知切面类的名称，类型String[]
+        optimize：为true则使用cglib为代理，默认false，让spring自动判断。
+    -->
+    <bean id="proxyFactoryBean" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="interfaces" value="com.misiai.c_spring_01.UserService"/>
+        <property name="target" ref="userService"/>
+        <property name="interceptorNames" value="myAspect"/>
+        <property name="optimize" value="true"/>
+    </bean>
+
+
+</beans>
